@@ -1,4 +1,3 @@
-# Import required libraries
 import pandas as pd
 import dash
 import dash_html_components as html
@@ -6,21 +5,20 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output
 import plotly.express as px
 
-# Dataframe
+
 spacex_df = pd.read_csv("data_falcon9_2.csv")
 max_payload = spacex_df['PayloadMass'].max()
 min_payload = spacex_df['PayloadMass'].min()
 
-# Dash application
+
 app = dash.Dash(__name__)
 
-# App layout
+
 app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                         style={'textAlign': 'center', 'color': '#503D36',
                                                'font-size': 40}
                                         ),
-                                # Dropdown list to enable Launch Site selection
-                                # The default select value is for ALL sites
+
                                 dcc.Dropdown(id='site-dropdown',
                                 options=[
                                     {'label': 'All Sites', 'value': 'All Sites'},
@@ -34,13 +32,10 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                 ),
                                 html.Br(),
 
-                                # Pie chart to show the total successful launches count for all sites
-                                # Success vs. Failed counts for the site
                                 html.Div(dcc.Graph(id='success-pie-chart')),
                                 html.Br(),
 
                                 html.P("Payload range (Kg):"),
-                                # Slider to select payload range
                                 dcc.RangeSlider(id='payload-slider',
                                 min=0,
                                 max=10000,
@@ -48,7 +43,6 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                 marks={i: '{}'.format(i) for i in range(0, 10001, 1000)},
                                 value=[min_payload, max_payload]),
 
-                                # Scatter chart to show the correlation between payload and launch success
                                 html.Div(dcc.Graph(id='success-payload-scatter-chart')),
                                 ])
 
